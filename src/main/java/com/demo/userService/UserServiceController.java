@@ -1,5 +1,7 @@
 package com.demo.userService;
 
+import java.util.logging.Logger;
+
 import javax.inject.Inject;
 
 import com.demo.userService.model.UserObject;
@@ -11,19 +13,23 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 
 @Controller("/userService") 
 public class UserServiceController {
 
+	Logger log=Logger.getLogger(this.getClass().getName());
+	
 	@Inject
 	private UserService userService;
-    @Get("/") 
+    @Get("/get/{userId}") 
     @Produces(MediaType.TEXT_JSON) 
-    public String index() {
+    public String get(@PathVariable String userId) {
     	Gson gson=new Gson();
-        return gson.toJson(userService.getUser("1234")); 
+        log.info("GET USER: USERID================>"+userId);
+        return gson.toJson(userService.getUser(userId)); 
     }	
 
     @Post("/create") 
@@ -31,8 +37,8 @@ public class UserServiceController {
     @Produces(MediaType.TEXT_JSON) 
     public String create(@Body UserObject user) {
     	Gson gson=new Gson();
-        System.out.println(user.getUserId());
-    	return gson.toJson(user); 
+        log.info("CREATE USER: USERID================>"+user.getUserId());
+    	return gson.toJson(userService.createUser(user)); 
     }	
     
 		
