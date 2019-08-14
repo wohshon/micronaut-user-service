@@ -13,6 +13,8 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Header;
+import io.micronaut.http.annotation.Headers;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
@@ -24,7 +26,17 @@ public class UserServiceController {
 	
 	@Inject
 	private UserService userService;
-    @Get("/get/{userId}") 
+
+    @Get("/test/{userId}") 
+    @Produces(MediaType.TEXT_JSON) 
+    public String test(@Header("Authorization") String header, @PathVariable String userId) {
+    	Gson gson=new Gson();
+        log.info("GET USER: USERID================>"+userId);
+        log.info("access token ================>"+header.substring(7));
+        return gson.toJson(userService.getUser(userId)); 
+    }	
+	
+	@Get("/get/{userId}") 
     @Produces(MediaType.TEXT_JSON) 
     public String get(@PathVariable String userId) {
     	Gson gson=new Gson();
