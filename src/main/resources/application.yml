@@ -1,5 +1,5 @@
 micronaut:
   application:
     name: user-service
-  server:
-    port: 8081
+#  server:
+#    port: 8081
